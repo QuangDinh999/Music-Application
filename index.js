@@ -11,6 +11,7 @@ const prevBtn = $('.btn-prev')
 const randomBtn = $('.btn-random')
 const replayBtn = $('.btn-repeat')
 
+
 const app = {
     isPlaying: false,
     isShuffle: false,
@@ -74,8 +75,8 @@ const app = {
         })
     },
     render: function(playlist) {
-        const full = playlist.map(function(song) {
-            return `<div class="song">
+        const full = playlist.map(function(song, index) {
+            return `<div class="song song-${index} ${index === app.curentIndex ? 'active' : ''}">
                         <div class="thumb" style="background-image: url('${song.img}')">
                         </div>
                         <div class="body">
@@ -112,7 +113,7 @@ const app = {
             cd.style.width = NewWidth > 0 ? NewWidth + 'px' : 0 + 'px'
             cd.style.opacity = NewWidth / CDwith
         }
-
+        
         //play music
         playBtn.onclick = function() {
             if(app.isPlaying) {
@@ -149,6 +150,8 @@ const app = {
         
         // next Song
         HandleNextSong = function() {
+            const preSong = $(`.song-${app.curentIndex}`)
+            preSong.classList.remove("active")
             if(app.isReplay){
                 audio.play()
             }else if(app.isShuffle){
@@ -157,10 +160,12 @@ const app = {
             }else{
                 app.nextSong()
                 audio.play()
-                if(player.classList.contains("playing") == false) {
+                if(player.classList.contains("playing") === false) {
                     player.classList.add("playing")
                 }
             }
+            const nextSong = $(`.song-${app.curentIndex}`)
+            nextSong.classList.add("active")
         }
         replayBtn.onclick = function() {
             app.isReplay = !app.isReplay
@@ -177,11 +182,15 @@ const app = {
         audio.onended = HandleNextSong
         //prev song
         prevBtn.onclick = function() {
+            const preSong = $(`.song-${app.curentIndex}`)
+            preSong.classList.remove("active")
             app.prevSong()
             audio.play()
-            if(player.classList.contains("playing") == false) {
+            if(player.classList.contains("playing") === false ) {
                 player.classList.add("playing")
             }
+            const nextSong = $(`.song-${app.curentIndex}`)
+            nextSong.classList.add("active")
         }
 
         randomBtn.onclick = function() {
@@ -189,7 +198,7 @@ const app = {
             randomBtn.classList.toggle("active", app.isShuffle)
         }
 
-        
+        const pointSong = $(`.song-${app.curentIndex}`)
 
         
         
