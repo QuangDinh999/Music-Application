@@ -90,7 +90,7 @@ const app = {
         });
         $('.playlist').innerHTML = full.join("");
     },
-    
+
     Handlerevent: function() {
         //CD rotate and stop
         const cdAnimate = cd.animate([
@@ -166,6 +166,7 @@ const app = {
             }
             const nextSong = $(`.song-${app.curentIndex}`)
             nextSong.classList.add("active")
+            app.scrollToView()
         }
         replayBtn.onclick = function() {
             app.isReplay = !app.isReplay
@@ -199,10 +200,15 @@ const app = {
         }
 
         const pointSong = $(`.song-${app.curentIndex}`)
-
-        
-        
-        
+    },
+    scrollToView: function (){
+        setTimeout(() => {
+            console.log($('.song.active'))
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            })
+        }, 300)
     },
     shuffleSong: function() {
         let randomIndex
@@ -225,7 +231,6 @@ const app = {
         }else{
             this.curentIndex--
         }
-        console.log(this.curentIndex)
         app.loadCurentSong()
     },
     loadCurentSong: function() {
